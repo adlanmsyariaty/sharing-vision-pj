@@ -10,7 +10,7 @@ const errorHandler = (err, req, res, next) => {
       })
   } else if (err.name === 'POST_NOT_FOUND') {
       res.status(404).json({
-          message: 'Post not found'
+          message: 'Post not found' 
       })
   } else {
       console.log(err)

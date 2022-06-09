@@ -1,4 +1,5 @@
-const { Post, sequelize } = require("../models");
+const { Post } = require("../models");
+const { Op } = require('sequelize')
 
 class PostController {
   static async addPostData(req, res, next) {
@@ -20,15 +21,32 @@ class PostController {
     try {
       const limit = req.params.limit;
       const offset = req.params.offset;
+      const status = req.query.status;
 
-      const posts = await Post.findAll({
-        limit,
-        offset: offset - 1,
+      let options = {
+        where: {},
         attributes: {
-          exclude: ["id", "createdAt", "updatedAt"],
+          exclude: ["createdAt", "updatedAt"],
         },
-      });
+      };
 
+      if (status) {
+        options.where = {
+          ...options.where,
+          status: {
+            [Op.iLike]: `%${status}%`,
+          },
+        };
+      }
+      if (Number(limit)) {
+        options.limit = limit;
+      }
+
+      if (Number(offset)) {
+        options.offset = offset;
+      }
+
+      const posts = await Post.findAll(options);
       res.status(200).json(posts);
     } catch (error) {
       next(error);
@@ -58,17 +76,22 @@ class PostController {
 
       const post = await Post.findOne({
         where: {
-          id
-        }
-      })
-
-      if (!post) throw {name: "POST_NOT_FOUND"}
-
-      await Post.destroy({
-        where: {
           id,
         },
       });
+
+      if (!post) throw { name: "POST_NOT_FOUND" };
+
+      await Post.update(
+        {
+          status: "Thrash"
+        },
+        {
+          where: {
+            id,
+          },
+        }
+      );
       res.status(200).json();
     } catch (error) {
       next(error);
@@ -82,11 +105,11 @@ class PostController {
 
       const post = await Post.findOne({
         where: {
-          id
-        }
-      })
+          id,
+        },
+      });
 
-      if (!post) throw {name: "POST_NOT_FOUND"}
+      if (!post) throw { name: "POST_NOT_FOUND" };
 
       await Post.update(
         {
@@ -97,8 +120,8 @@ class PostController {
         },
         {
           where: {
-            id
-          }
+            id,
+          },
         }
       );
       res.status(200).json({});

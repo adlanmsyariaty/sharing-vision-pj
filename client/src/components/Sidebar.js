@@ -4,21 +4,49 @@ import {
   CSidebarBrand,
   CSidebarNav,
   CNavTitle,
-  CNavItem,
   CSidebarToggler,
 } from "@coreui/react";
+import { Link } from "react-router-dom";
 
-export default function Sidebar({ visible }) {
+export default function Sidebar({ visible, setVisible, isPage, setIsPage }) {
+
   return (
     <CSidebar className="min-vh-100" visible={visible}>
-      <CSidebarBrand>Post Project</CSidebarBrand>
+      <CSidebarBrand>POST PROJECT</CSidebarBrand>
       <CSidebarNav>
         <CNavTitle>Posts</CNavTitle>
-        <CNavItem href="#">All Posts</CNavItem>
-        <CNavItem href="#">Add New</CNavItem>
-        <CNavItem href="#">Preview</CNavItem>
+        <Link
+          to="/"
+          className={
+            "text-decoration-none p-3 text-start " +
+            (isPage === "home" ? "text-danger" : "text-white")
+          }
+          onClick={() => setIsPage('home')}
+        >
+          All Posts
+        </Link>
+        <Link
+          to="/add-post"
+          className={
+            "text-decoration-none p-3 text-start " +
+            (isPage === "add" ? "text-danger" : "text-white")
+          }
+          onClick={() => setIsPage('add')}
+        >
+          Add New
+        </Link>
+        <Link
+          to="/preview"
+          className={
+            "text-decoration-none p-3 text-start " +
+            (isPage === "preview" ? "text-danger" : "text-white")
+          }
+          onClick={() => setIsPage('preview')}
+        >
+          Preview
+        </Link>
       </CSidebarNav>
-      <CSidebarToggler />
+      <CSidebarToggler onClick={() => setVisible(!visible)} />
     </CSidebar>
   );
 }

@@ -24,7 +24,7 @@ function App() {
 
         <div className="p-3 d-flex justify-content-center w-100">
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<Home isPage={isPage} setIsPage={setIsPage}/>} />
             <Route path="/add-post" element={<AddPost isPage={isPage} setIsPage={setIsPage}/>} />
             <Route path="/preview" element={<Preview />} />
           </Routes>

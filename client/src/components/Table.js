@@ -11,7 +11,7 @@ import {
 } from "@coreui/react";
 import axios from "axios";
 
-export default function Table({ data, isTab, setIsTab }) {
+export default function Table({ data, isTab, setIsTab, setIdPost }) {
   const deletePost = async (id) => {
     try {
       await axios.delete(`http://localhost:3000/article/${id}`);
@@ -43,7 +43,7 @@ export default function Table({ data, isTab, setIsTab }) {
                   role="group"
                   aria-label="Basic mixed styles example"
                 >
-                  <CButton color="success">
+                  <CButton color="success" onClick={() => setIdPost(el.id)}>
                     <ion-icon name="create-outline"></ion-icon>
                   </CButton>
                   {isTab !== "Thrased" && (

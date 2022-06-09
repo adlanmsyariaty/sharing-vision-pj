@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-export default function EditPost({ idPost, setIdPost }) {
+export default function EditPost({ idPost, setIdPost, fetchPost }) {
 
   const [newPost, setPost] = useState({
     title: "",
@@ -24,7 +24,6 @@ export default function EditPost({ idPost, setIdPost }) {
             category: response.data.category,
             status: response.data.status,
           });
-          console.log(response.data.status)
         } catch (error) {
           console.log(error.response.data.message);
         }
@@ -51,6 +50,7 @@ export default function EditPost({ idPost, setIdPost }) {
         status: "",
       });
       setIdPost()
+      fetchPost()
     } catch (error) {
       if (Array.isArray(error.response.data.message)) {
         Swal.fire({
